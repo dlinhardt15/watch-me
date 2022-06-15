@@ -1,10 +1,13 @@
 import React from 'react';
 import ShowCard from './ShowCard';
 
-function ShowList() {
+function ShowList({shows, addToWatchList}) {
+    
     return(
         <div className="show-container">
-            {/** Put your show cards here */}
+            {shows.map(show => {
+                return <ShowCard key={show.id} show={show} addToWatchList={addToWatchList} />
+            })}
         </div>
     );
 }
