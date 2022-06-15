@@ -1,6 +1,6 @@
 import React from 'react';
 
-function ShowCard({show, addToWatchList, deleteFromWatchList}) {
+function ShowCard({show, addWatchListShow, onShowDelete}) {
 
     /** 
      * This function to get the correct image to show up for the streaming service.
@@ -32,9 +32,10 @@ function ShowCard({show, addToWatchList, deleteFromWatchList}) {
         return imgSrc;
     }
     
+
     return(
-        <div className="show-card" onClick={() => addToWatchList(show)}>
-            <img src={show.image} alt="cover art" className="show-art"/>
+        <div className="show-card" onClick={() => addWatchListShow(show)}>
+            <img src={show.image} alt="cover art" className="show-art" />
             <div className="details-container">
                 <header>
                     <h3>{show.name}</h3>                    
@@ -42,7 +43,7 @@ function ShowCard({show, addToWatchList, deleteFromWatchList}) {
                 <p>{show.summary}</p>
                 <footer>
                     <img src={getStreamingLogo(show.stream_on)} alt={show.stream_on} className="streaming-logo"></img>
-                    <button onClick={() => deleteFromWatchList(show)}>Delete</button>
+                    <button onClick={() => onShowDelete(show.id)}>Delete</button>
                 </footer>
             </div>
         </div>

@@ -4,29 +4,37 @@ import ShowList from './ShowList'
 
 function ShowCatalog() {
     const [shows, setShows] = useState([])
-    const [watchShows, setWatchShows] = useState([])
-    // console.log(watchShows)
-     useEffect(() => {
+    const [watchListShow, setWatchListShow] = useState([])
+
+    useEffect(() => {
         fetch("http://localhost:8081/shows")
         .then(response => response.json())
-        .then(data => setShows(data))}, [])
+        .then(data => setShows(data))
+    }, [])
 
-    function addToWatchList (show) {
-        const showClicked = watchShows.findIndex(item => show.id === item.id)
-        if (showClicked === -1) {
-            setWatchShows([...watchShows, show])
+    function addWatchListShow (clickedShow) {
+        if (watchListShow.includes(clickedShow) === false) {
+            setWatchListShow([...watchListShow, clickedShow])
         } else {
-            console.log("Show already on watch list...")
-        }
+            const filteredWatchList = watchListShow.filter(show => show.id !== clickedShow.id)
+            setWatchListShow(filteredWatchList)
+        } 
     }
-    function deleteFromWatchList() {
-        console.log("deleted")
+
+    function onShowDelete (id) {
+        const filteredShows = shows.filter(show => show.id !== id)
+        setShows(filteredShows)
+        
+        fetch("http://localhost:8081/shows/" + id, {
+            method: "DELETE"
+        })
     }
+
     return (
         <>
-            <MyWatchList watchShows={watchShows} deleteFromWatchList={deleteFromWatchList}/>
+            <MyWatchList watchListShow={watchListShow} addWatchListShow={addWatchListShow} onShowDelete={onShowDelete}/>
             <hr/>
-            <ShowList shows={shows} addToWatchList={addToWatchList}/>
+            <ShowList shows={shows} addWatchListShow={addWatchListShow} onShowDelete={onShowDelete}/>
         </>
     );
 }
